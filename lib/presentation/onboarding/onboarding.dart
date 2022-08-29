@@ -65,9 +65,10 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, Routes.loginRoute);
                   },
-                  child: const Text(
+                  child: Text(
                     AppStrings.skip,
                     textAlign: TextAlign.end,
+                    style: Theme.of(context).textTheme.subtitle2,
                   ),
                 )),
             // add layout for indicator and arrows
@@ -79,59 +80,62 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   }
 
   Widget _getBottomSheetWidget() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        // left arrow
-        Padding(
-          padding: const EdgeInsets.all(AppPadding.p14),
-          child: GestureDetector(
-            child: SizedBox(
-              height: AppSize.s20,
-              width: AppSize.s20,
-              child: SvgPicture.asset(ImageAssets.leftArrowIc),
+    return Container(
+      color: ColorManager.primary,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // left arrow
+          Padding(
+            padding: const EdgeInsets.all(AppPadding.p14),
+            child: GestureDetector(
+              child: SizedBox(
+                height: AppSize.s20,
+                width: AppSize.s20,
+                child: SvgPicture.asset(ImageAssets.leftArrowIc),
+              ),
+              onTap: () {
+                // go to previous slide
+                _pageController.animateToPage(
+                  _getPreviousIndex(),
+                  duration: const Duration(milliseconds: DurationConstant.d300),
+                  curve: Curves.bounceInOut,
+                );
+              },
             ),
-            onTap: () {
-              // go to previous slide
-              _pageController.animateToPage(
-                _getPreviousIndex(),
-                duration: const Duration(milliseconds: DurationConstant.d300),
-                curve: Curves.bounceInOut,
-              );
-            },
           ),
-        ),
 
-        // circles indicator
-        Row(
-          children: [
-            for (int i = 0; i < _list.length; i++)
-              Padding(
-                padding: const EdgeInsets.all(AppPadding.p8),
-                child: _getProperCircle(i),
-              )
-          ],
-        ),
-        // right arrow
-        Padding(
-          padding: const EdgeInsets.all(AppPadding.p14),
-          child: GestureDetector(
-            child: SizedBox(
-              height: AppSize.s20,
-              width: AppSize.s20,
-              child: SvgPicture.asset(ImageAssets.rightarrowIc),
-            ),
-            onTap: () {
-              // go to next slide
-              _pageController.animateToPage(
-                _getNextIndex(),
-                duration: const Duration(milliseconds: DurationConstant.d300),
-                curve: Curves.bounceInOut,
-              );
-            },
+          // circles indicator
+          Row(
+            children: [
+              for (int i = 0; i < _list.length; i++)
+                Padding(
+                  padding: const EdgeInsets.all(AppPadding.p8),
+                  child: _getProperCircle(i),
+                )
+            ],
           ),
-        )
-      ],
+          // right arrow
+          Padding(
+            padding: const EdgeInsets.all(AppPadding.p14),
+            child: GestureDetector(
+              child: SizedBox(
+                height: AppSize.s20,
+                width: AppSize.s20,
+                child: SvgPicture.asset(ImageAssets.rightarrowIc),
+              ),
+              onTap: () {
+                // go to next slide
+                _pageController.animateToPage(
+                  _getNextIndex(),
+                  duration: const Duration(milliseconds: DurationConstant.d300),
+                  curve: Curves.bounceInOut,
+                );
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 
