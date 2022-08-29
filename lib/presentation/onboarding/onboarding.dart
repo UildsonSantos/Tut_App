@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tut_app/domain/slider_model.dart';
 import 'package:tut_app/presentation/resources/assets_manager.dart';
 import 'package:tut_app/presentation/resources/color_manager.dart';
 import 'package:tut_app/presentation/resources/routes_manager.dart';
@@ -165,13 +166,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   }
 }
 
-class SliderObject {
-  String title;
-  String subTitle;
-  String image;
-
-  SliderObject(this.title, this.subTitle, this.image);
-}
 
 class OnBoardingPage extends StatelessWidget {
   final SliderObject _sliderObject;
