@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tut_app/presentation/color_manager.dart';
+import 'package:tut_app/presentation/font_manager.dart';
+import 'package:tut_app/presentation/styles_manager.dart';
 import 'package:tut_app/presentation/values_manager.dart';
 
 ThemeData getApplicationTheme() {
@@ -11,6 +13,7 @@ ThemeData getApplicationTheme() {
     disabledColor: ColorManager.grey1,
     // will be used in case of disabled button for example
     accentColor: ColorManager.grey,
+    splashColor: ColorManager.primaryOpacity70,
 
     // card view theme
     cardTheme: CardTheme(
@@ -19,13 +22,20 @@ ThemeData getApplicationTheme() {
       elevation: AppSize.s4,
     ),
 
-      // App bar theme
+    // App bar theme
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+      color: ColorManager.primary,
+      elevation: AppSize.s4,
+      shadowColor: ColorManager.primaryOpacity70,
+      titleTextStyle:
+          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s16),
+    ),
 
-      // Button theme
+    // Button theme
 
-      // Text theme
+    // Text theme
 
-      // input decoration theme (text form field)
-
-      );
+    // input decoration theme (text form field)
+  );
 }
