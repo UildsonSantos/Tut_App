@@ -4,6 +4,7 @@ import 'package:tut_app/presentation/login/login.dart';
 import 'package:tut_app/presentation/main/main_view.dart';
 import 'package:tut_app/presentation/onboarding/onboarding.dart';
 import 'package:tut_app/presentation/register/register.dart';
+import 'package:tut_app/presentation/resources/strings_manager.dart';
 import 'package:tut_app/presentation/splash/splash.dart';
 import 'package:tut_app/presentation/store_datails/store_details.dart';
 
@@ -43,9 +44,9 @@ class RouteGenerator {
     return MaterialPageRoute(
         builder: (_) => Scaffold(
               appBar: AppBar(
-                title: const Text("No Route Found"),
+                title: const Text(AppStrings.noRouteFound),
               ),
-              body: const Center(child: Text("No Route Found")),
+              body: const Center(child: Text(AppStrings.noRouteFound)),
             ));
   }
 }
