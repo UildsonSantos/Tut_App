@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tut_app/presentation/resources/assets_manager.dart';
 import 'package:tut_app/presentation/resources/color_manager.dart';
+import 'package:tut_app/presentation/resources/routes_manager.dart';
 import 'package:tut_app/presentation/resources/strings_manager.dart';
 import 'package:tut_app/presentation/resources/values_manager.dart';
 
@@ -61,7 +62,9 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, Routes.loginRoute);
+                  },
                   child: const Text(
                     AppStrings.skip,
                     textAlign: TextAlign.end,
@@ -90,6 +93,11 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             ),
             onTap: () {
               // go to previous slide
+              _pageController.animateToPage(
+                _getPreviousIndex(),
+                duration: const Duration(milliseconds: DurationConstant.d300),
+                curve: Curves.bounceInOut,
+              );
             },
           ),
         ),
@@ -115,11 +123,33 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             ),
             onTap: () {
               // go to next slide
+              _pageController.animateToPage(
+                _getNextIndex(),
+                duration: const Duration(milliseconds: DurationConstant.d300),
+                curve: Curves.bounceInOut,
+              );
             },
           ),
         )
       ],
     );
+  }
+
+  int _getPreviousIndex() {
+    int previousIndex = _currentIndex--; // -1
+    if (previousIndex == -1) {
+      _currentIndex =
+          _list.length - 1; // infinite loop to go to the length of slider list
+    }
+    return _currentIndex;
+  }
+
+  int _getNextIndex() {
+    int nextIndex = _currentIndex++; // +1
+    if (nextIndex >= _list.length) {
+      _currentIndex = 0; // infinite loop to go to first item inside the slider
+    }
+    return _currentIndex;
   }
 
   Widget _getProperCircle(int index) {
