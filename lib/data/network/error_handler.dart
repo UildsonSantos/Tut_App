@@ -110,6 +110,11 @@ class ResponseMessage {
       "Please check your internet connection";
 }
 
+class ApiInternalStatus {
+  static const int success = 0;
+  static const int failure = 1;
+}
+
 extension DataSourceExtension on DataSource {
   Failure getFailure() {
     switch (this) {
