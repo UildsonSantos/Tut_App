@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:tut_app/data/network/failure.dart';
 
 enum DataSource {
@@ -13,7 +14,52 @@ enum DataSource {
   receiveTimeout,
   sendTimeout,
   cacheError,
-  noInternetConnection
+  noInternetConnection,
+  defaultError
+}
+
+class ErrorHandler implements Exception {
+  late Failure failure;
+
+  ErrorHandler.handle(dynamic error) {
+    if (error is DioError) {
+      // dio error so its error from response of the API
+      failure = _handleError(error);
+    } else {
+      // default error
+      failure = DataSource.defaultError.getFailure();
+    }
+  }
+
+  Failure _handleError(DioError dioError) {
+    switch (dioError.type) {
+      case DioErrorType.connectTimeout:
+        return DataSource.connectTimeout.getFailure();
+      case DioErrorType.sendTimeout:
+        return DataSource.sendTimeout.getFailure();
+      case DioErrorType.receiveTimeout:
+        return DataSource.receiveTimeout.getFailure();
+      case DioErrorType.response:
+        switch (dioError.response?.statusCode) {
+          case ResponseCode.badRequest:
+            return DataSource.badRequest.getFailure();
+          case ResponseCode.forbidden:
+            return DataSource.forbidden.getFailure();
+          case ResponseCode.unauthorized:
+            return DataSource.unauthorized.getFailure();
+          case ResponseCode.notFound:
+            return DataSource.notFound.getFailure();
+          case ResponseCode.internalServerError:
+            return DataSource.internalServerError.getFailure();
+          default:
+            return DataSource.defaultError.getFailure();
+        }
+      case DioErrorType.cancel:
+        return DataSource.cancel.getFailure();
+      case DioErrorType.other:
+        return DataSource.defaultError.getFailure();
+    }
+  }
 }
 
 class ResponseCode {
@@ -28,7 +74,7 @@ class ResponseCode {
       500; // failure, crash happened in server side
 
   // local status code
-  static const int unknown = -1;
+  static const int defaultError = -1;
   static const int connectTimeout = -2;
   static const int cancel = -3;
   static const int receiveTimeout = -4;
@@ -54,7 +100,7 @@ class ResponseMessage {
       "Some thing went wrong, try again later"; // failure, crash happened in server side
 
   // local status code
-  static const String unknown = "Some thing went wrong, try again later";
+  static const String defaultError = "Some thing went wrong, try again later";
   static const String connectTimeout = "Time out error, try again later";
   static const String cancel = "Request was cancelled, try again later";
   static const String receiveTimeout = "Time out error, try again later";
@@ -117,10 +163,15 @@ extension DataSourceExtension on DataSource {
           ResponseCode.noInternetConnection,
           ResponseMessage.noInternetConnection,
         );
+      case DataSource.defaultError:
+        return Failure(
+          ResponseCode.defaultError,
+          ResponseMessage.defaultError,
+        );
       default:
         return Failure(
-          ResponseCode.unknown,
-          ResponseMessage.unknown,
+          ResponseCode.defaultError,
+          ResponseMessage.defaultError,
         );
     }
   }
