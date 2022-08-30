@@ -28,22 +28,22 @@ class OnBoardingViewModel extends BaseViewModel
   }
 
   @override
-  void goNext() {
+  int goNext() {
     int nextIndex = _currentIndex++; // +1
     if (nextIndex >= _list.length) {
       _currentIndex = 0; // infinite loop to go to first item inside the slider
     }
-    _postDataToView();
+    return _currentIndex;
   }
 
   @override
-  void goPrevious() {
+  int goPrevious() {
     int previousIndex = _currentIndex--; // -1
     if (previousIndex == -1) {
       _currentIndex =
           _list.length - 1; // infinite loop to go to the length of slider list
     }
-    _postDataToView();
+    return _currentIndex;
   }
 
   @override
@@ -79,8 +79,8 @@ class OnBoardingViewModel extends BaseViewModel
 
 // inputs mean the orders that our view model will receive from our view
 abstract class OnBoardingViewModelInputs {
-  void goNext(); // when user clicks on right arrow or swipe left.
-  void goPrevious(); // when user clicks on left arrow or swipe right.
+  int goNext(); // when user clicks on right arrow or swipe left.
+  int goPrevious(); // when user clicks on left arrow or swipe right.
   void onPageChanged(int index);
 
   Sink
