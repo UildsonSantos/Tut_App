@@ -140,7 +140,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               child: SizedBox(
                 height: AppSize.s20,
                 width: AppSize.s20,
-                child: SvgPicture.asset(ImageAssets.rightarrowIc),
+                child: SvgPicture.asset(ImageAssets.rightArrowIc),
               ),
               onTap: () {
                 // go to next slide
