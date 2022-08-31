@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tut_app/data/mapper/mapper.dart';
 import 'package:tut_app/data/network/failure.dart';
+import 'package:tut_app/presentation/resources/assets_manager.dart';
 import 'package:tut_app/presentation/resources/color_manager.dart';
 import 'package:tut_app/presentation/resources/font_manager.dart';
 import 'package:tut_app/presentation/resources/strings_manager.dart';
@@ -50,26 +52,26 @@ class StateRenderer extends StatelessWidget {
         return _getPopUpDialog(
             context,
             [
-              _getAnimatedImage()
+              _getAnimatedImage(JsonAssets.loading)
             ]);
       case StateRendererType.popUpErrorState:
         return _getPopUpDialog(
             context,
             [
-              _getAnimatedImage(),
+              _getAnimatedImage(JsonAssets.error),
               _getMessage(failure.message),
               _getRetryButton(AppStrings.ok, context)
             ]);
       case StateRendererType.fullScreenLoadingState:
         return _getItemsInColumn(
             [
-              _getAnimatedImage(),
+              _getAnimatedImage(JsonAssets.loading),
               _getMessage(message)
             ]);
       case StateRendererType.fullScreenErrorState:
         return _getItemsInColumn(
             [
-              _getAnimatedImage(),
+              _getAnimatedImage(JsonAssets.error),
               _getMessage(failure.message),
               _getRetryButton(AppStrings.retryAgain, context)
             ]);
@@ -78,7 +80,7 @@ class StateRenderer extends StatelessWidget {
       case StateRendererType.emptyScreenState:
         return _getItemsInColumn(
             [
-              _getAnimatedImage(),
+              _getAnimatedImage(JsonAssets.empty),
               _getMessage(message)
             ]);
       default:
@@ -120,11 +122,11 @@ class StateRenderer extends StatelessWidget {
     );
   }
 
-  Widget _getAnimatedImage() {
+  Widget _getAnimatedImage(String animationName) {
     return SizedBox(
       height: AppSize.s100,
       width: AppSize.s100,
-      child:, // json image
+      child: Lottie.asset(animationName),
     );
   }
 
