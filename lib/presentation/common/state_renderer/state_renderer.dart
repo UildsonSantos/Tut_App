@@ -47,13 +47,25 @@ class StateRenderer extends StatelessWidget {
   Widget _getStateWidget(BuildContext context) {
     switch (stateRendererType) {
       case StateRendererType.popupLoadingState:
-        return _getPopUpDialog(context);
+        return _getPopUpDialog(
+            context,
+            [
+              _getAnimatedImage()
+            ]);
       case StateRendererType.popUpErrorState:
-      // TODO: Handle this case.
-        break;
+        return _getPopUpDialog(
+            context,
+            [
+              _getAnimatedImage(),
+              _getMessage(failure.message),
+              _getRetryButton(AppStrings.ok, context)
+            ]);
       case StateRendererType.fullScreenLoadingState:
-        return _getItemsInColumn([_getAnimatedImage(), _getMessage(message)]);
-        break;
+        return _getItemsInColumn(
+            [
+              _getAnimatedImage(),
+              _getMessage(message)
+            ]);
       case StateRendererType.fullScreenErrorState:
         return _getItemsInColumn(
             [
@@ -62,16 +74,19 @@ class StateRenderer extends StatelessWidget {
               _getRetryButton(AppStrings.retryAgain, context)
             ]);
       case StateRendererType.contentScreenState:
-      // TODO: Handle this case.
-        break;
+        return Container();
       case StateRendererType.emptyScreenState:
-        return _getItemsInColumn([_getAnimatedImage(), _getMessage(message)]);
+        return _getItemsInColumn(
+            [
+              _getAnimatedImage(),
+              _getMessage(message)
+            ]);
       default:
         return Container();
     }
   }
 
-  Widget _getPopUpDialog(BuildContext context) {
+  Widget _getPopUpDialog(BuildContext context, List<Widget> children) {
     return Dialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSize.s14)
@@ -85,19 +100,24 @@ class StateRenderer extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppSize.s14),
             boxShadow: const [
               BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: AppSize.s12,
-                  offset: Offset(AppSize.s0, AppSize.s12),
+                color: Colors.black26,
+                blurRadius: AppSize.s12,
+                offset: Offset(AppSize.s0, AppSize.s12),
               )
             ]
         ),
-        child: _getDialogContent(context),
+        child: _getDialogContent(context, children),
       ),
     );
   }
 
-  Widget _getDialogContent(BuildContext context) {
-    return Container();
+  Widget _getDialogContent(BuildContext context, List<Widget> children) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: children,
+    );
   }
 
   Widget _getAnimatedImage() {
