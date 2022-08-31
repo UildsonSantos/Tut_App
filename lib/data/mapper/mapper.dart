@@ -1,6 +1,6 @@
 import 'package:tut_app/app/extensions.dart';
 import 'package:tut_app/data/responses/responses.dart';
-import 'package:tut_app/domain/models.dart';
+import 'package:tut_app/domain/models/models.dart';
 
 const empty = "";
 const zero = 0;
