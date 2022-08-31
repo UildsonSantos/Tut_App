@@ -15,7 +15,7 @@ class LoginViewModel extends BaseViewModel
 
   var loginObject = LoginObject("", "");
 
-  LoginUseCase? _loginUseCase; // TODO: remove ?
+  final LoginUseCase _loginUseCase;
 
   LoginViewModel(this._loginUseCase);
 
@@ -33,11 +33,9 @@ class LoginViewModel extends BaseViewModel
   }
 
   @override
-  // TODO: implement inputPassword
   Sink get inputPassword => _passwordStreamController.sink;
 
   @override
-  // TODO: implement inputUserName
   Sink get inputUserName => _userNameStreamController.sink;
 
   @override
@@ -45,22 +43,22 @@ class LoginViewModel extends BaseViewModel
 
   @override
   login() async {
-    // (await _loginUseCase.execute(
-    //   LoginUseCaseInput(
-    //     loginObject.userName,
-    //     loginObject.password,
-    //   ),
-    // ))
-    //     .fold(
-    //   (failure) => {
-    //     // left -> failure
-    //     print(failure.message)
-    //   },
-    //   (data) => {
-    //     // right -> success (data)
-    //     print(data.customer?.name)
-    //   },
-    // );
+    (await _loginUseCase.execute(
+      LoginUseCaseInput(
+        loginObject.userName,
+        loginObject.password,
+      ),
+    ))
+        .fold(
+      (failure) => {
+        // left -> failure
+        print(failure.message)
+      },
+      (data) => {
+        // right -> success (data)
+        print(data.customer?.name)
+      },
+    );
   }
 
   @override
