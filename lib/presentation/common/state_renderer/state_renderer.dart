@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tut_app/data/mapper/mapper.dart';
 import 'package:tut_app/data/network/failure.dart';
+import 'package:tut_app/presentation/resources/color_manager.dart';
+import 'package:tut_app/presentation/resources/font_manager.dart';
 import 'package:tut_app/presentation/resources/strings_manager.dart';
+import 'package:tut_app/presentation/resources/styles_manager.dart';
+import 'package:tut_app/presentation/resources/values_manager.dart';
 
 enum StateRendererType {
   // PopUp States
@@ -29,7 +33,8 @@ class StateRenderer extends StatelessWidget {
     String? message,
     String? title,
     required this.retryActionFunction,
-  })  : message = message ?? AppStrings.loading,
+  })
+      : message = message ?? AppStrings.loading,
         title = title ?? empty,
         failure = failure ?? DefaultFailure(),
         super(key: key);
@@ -42,26 +47,55 @@ class StateRenderer extends StatelessWidget {
   Widget _getStateWidget() {
     switch (stateRendererType) {
       case StateRendererType.popupLoadingState:
-        // TODO: Handle this case.
+      // TODO: Handle this case.
         break;
       case StateRendererType.popUpErrorState:
-        // TODO: Handle this case.
+      // TODO: Handle this case.
         break;
       case StateRendererType.fullScreenLoadingState:
-        _getItemsInColumn();
+        return _getItemsInColumn([_getAnimatedImage(), _getMessage(message)]);
         break;
       case StateRendererType.fullScreenErrorState:
-        // TODO: Handle this case.
-        break;
+        return _getItemsInColumn(
+            [
+              _getAnimatedImage(),
+              _getMessage(failure.message),
+              _getRetryButton(AppStrings.retryAgain)
+            ]);
       case StateRendererType.contentScreenState:
-        // TODO: Handle this case.
+      // TODO: Handle this case.
         break;
       case StateRendererType.emptyScreenState:
-        // TODO: Handle this case.
+      // TODO: Handle this case.
         break;
       default:
         return Container();
     }
+  }
+
+  Widget _getAnimatedImage() {
+    return SizedBox(
+      height: AppSize.s100,
+      width: AppSize.s100,
+      child:, // json image
+    );
+  }
+
+  Widget _getMessage(String message) {
+    return Text(
+      message,
+      style: getMediumStyle(
+        color: ColorManager.black,
+        fontSize: FontSize.s16,
+      ),
+    );
+  }
+
+  Widget _getRetryButton(String buttonTitle) {
+    return ElevatedButton(
+      onPressed: () {},
+      child: Text(buttonTitle),
+    );
   }
 
   Widget _getItemsInColumn(List<Widget> children) {
