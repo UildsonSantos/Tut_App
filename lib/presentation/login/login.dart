@@ -15,7 +15,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final LoginViewModel _viewModel =
-      LoginViewModel(null); // todo pass here login useCase
+  LoginViewModel(null); // todo pass here login useCase
 
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -103,6 +103,18 @@ class _LoginViewState extends State<LoginView> {
                       );
                     },
                   ),
+                ),
+                const SizedBox(height: AppSize.s28),
+                Padding(padding: const EdgeInsets.only(
+                    left: AppPadding.p28, right: AppPadding.p28),
+                    child: StreamBuilder(
+                      stream:, // todo add me later,
+                      builder: (context, snapshot) {
+                        return ElevatedButton(
+                            onPressed: () {},
+                            child: const Text(AppStrings.login));
+                      },
+                    )
                 )
               ],
             ),
