@@ -16,7 +16,7 @@ class CustomerResponse {
   String? id;
   @JsonKey(name: "name")
   String? name;
-  @JsonKey(name: "numOfNotifications")
+  @JsonKey(name: "num_of_notifications")
   int? numOfNotifications;
 
   CustomerResponse(this.id, this.name, this.numOfNotifications);

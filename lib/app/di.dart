@@ -1,4 +1,4 @@
-import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:data_connection_checker/data_connection_checker.dart'; // with: flutter run --no-sound-null-safety
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tut_app/app/app_prefs.dart';
