@@ -22,14 +22,14 @@ class StateRenderer extends StatelessWidget {
   String title;
   Function retryActionFunction;
 
-  StateRenderer(
-      {Key? key,
-      required this.stateRendererType,
-      Failure? failure,
-      String? message,
-      String? title,
-      required this.retryActionFunction})
-      : message = message ?? AppStrings.loading,
+  StateRenderer({
+    Key? key,
+    required this.stateRendererType,
+    Failure? failure,
+    String? message,
+    String? title,
+    required this.retryActionFunction,
+  })  : message = message ?? AppStrings.loading,
         title = title ?? empty,
         failure = failure ?? DefaultFailure(),
         super(key: key);
@@ -37,5 +37,40 @@ class StateRenderer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container();
+  }
+
+  Widget _getStateWidget() {
+    switch (stateRendererType) {
+      case StateRendererType.popupLoadingState:
+        // TODO: Handle this case.
+        break;
+      case StateRendererType.popUpErrorState:
+        // TODO: Handle this case.
+        break;
+      case StateRendererType.fullScreenLoadingState:
+        _getItemsInColumn();
+        break;
+      case StateRendererType.fullScreenErrorState:
+        // TODO: Handle this case.
+        break;
+      case StateRendererType.contentScreenState:
+        // TODO: Handle this case.
+        break;
+      case StateRendererType.emptyScreenState:
+        // TODO: Handle this case.
+        break;
+      default:
+        return Container();
+    }
+  }
+
+  Widget _getItemsInColumn(List<Widget> children) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: children,
+      ),
+    );
   }
 }
