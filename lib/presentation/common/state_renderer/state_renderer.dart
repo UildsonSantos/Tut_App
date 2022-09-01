@@ -10,7 +10,7 @@ import 'package:tut_app/presentation/resources/values_manager.dart';
 
 enum StateRendererType {
   // PopUp States
-  popupLoadingState,
+  popUpLoadingState,
   popUpErrorState,
 
   // Full Screen states
@@ -43,7 +43,7 @@ class StateRenderer extends StatelessWidget {
 
   Widget _getStateWidget(BuildContext context) {
     switch (stateRendererType) {
-      case StateRendererType.popupLoadingState:
+      case StateRendererType.popUpLoadingState:
         return _getPopUpDialog(
           context,
           [
