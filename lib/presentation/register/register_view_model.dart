@@ -64,6 +64,9 @@ class RegisterViewModel extends BaseViewModel
   @override
   Sink get inputUserName => _userNameStreamController.sink;
 
+  @override
+  Sink get inputAllInputsValid => _isAllInputsValidStreamController.sink;
+
   // -- outputs
 
   @override
@@ -105,6 +108,10 @@ class RegisterViewModel extends BaseViewModel
       _profilePictureStreamController.stream.map((file) => file);
 
   @override
+  Stream<bool> get outputIsAllInputsValid =>
+      _isAllInputsValidStreamController.stream.map((_) => _validateAllInputs());
+
+  @override
   register() {
     // TODO: implement register
     throw UnimplementedError();
@@ -123,6 +130,19 @@ class RegisterViewModel extends BaseViewModel
     return password.length >= 8;
   }
 
+  bool _validateAllInputs() {
+    return registerViewObject.profilePicture.isNotEmpty &&
+        registerViewObject.email.isNotEmpty &&
+        registerViewObject.password.isNotEmpty &&
+        registerViewObject.mobileNumber.isNotEmpty &&
+        registerViewObject.userName.isNotEmpty &&
+        registerViewObject.countryMobileCode.isNotEmpty;
+  }
+
+  _validate() {
+    inputAllInputsValid.add(null);
+  }
+
   @override
   setCountryCode(String countryCode) {
     if (countryCode.isNotEmpty) {
@@ -133,6 +153,7 @@ class RegisterViewModel extends BaseViewModel
       // reset countryCode value in register view object
       registerViewObject = registerViewObject.copyWith(countryMobileCode: "");
     }
+    _validate();
   }
 
   @override
@@ -145,6 +166,7 @@ class RegisterViewModel extends BaseViewModel
       // reset username value in register view object
       registerViewObject = registerViewObject.copyWith(userName: "");
     }
+    _validate();
   }
 
   @override
@@ -157,6 +179,7 @@ class RegisterViewModel extends BaseViewModel
       // reset email value in register view object
       registerViewObject = registerViewObject.copyWith(email: "");
     }
+    _validate();
   }
 
   @override
@@ -169,6 +192,7 @@ class RegisterViewModel extends BaseViewModel
       // reset password value in register view object
       registerViewObject = registerViewObject.copyWith(password: "");
     }
+    _validate();
   }
 
   @override
@@ -181,6 +205,7 @@ class RegisterViewModel extends BaseViewModel
       // reset mobileNumber value in register view object
       registerViewObject = registerViewObject.copyWith(mobileNumber: "");
     }
+    _validate();
   }
 
   @override
@@ -193,6 +218,7 @@ class RegisterViewModel extends BaseViewModel
       // reset profilePicture value in register view object
       registerViewObject = registerViewObject.copyWith(profilePicture: "");
     }
+    _validate();
   }
 }
 
@@ -220,6 +246,8 @@ abstract class RegisterViewModelInput {
   Sink get inputPassword;
 
   Sink get inputProfilePicture;
+
+  Sink get inputAllInputsValid;
 }
 
 abstract class RegisterViewModelOutput {
@@ -240,4 +268,6 @@ abstract class RegisterViewModelOutput {
   Stream<String?> get outputErrorPassword;
 
   Stream<File> get outputIsProfilePictureValid;
+
+  Stream<bool> get outputIsAllInputsValid;
 }
