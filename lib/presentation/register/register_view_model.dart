@@ -5,6 +5,8 @@ import 'package:tut_app/app/functions.dart';
 import 'package:tut_app/domain/usecase/register_usecase.dart';
 import 'package:tut_app/presentation/base/base_view_model.dart';
 import 'package:tut_app/presentation/common/freezed_data_classes.dart';
+import 'package:tut_app/presentation/common/state_renderer/state_render_impl.dart';
+import 'package:tut_app/presentation/common/state_renderer/state_renderer.dart';
 
 class RegisterViewModel extends BaseViewModel
     with RegisterViewModelInput, RegisterViewModelOutput {
@@ -33,7 +35,8 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   void start() {
-    // TODO: implement start
+    // view tells state renderer, please show the content of the screen
+    inputState.add(ContentState());
   }
 
   @override
@@ -112,9 +115,28 @@ class RegisterViewModel extends BaseViewModel
       _isAllInputsValidStreamController.stream.map((_) => _validateAllInputs());
 
   @override
-  register() {
-    // TODO: implement register
-    throw UnimplementedError();
+  register() async {
+    inputState.add(
+        LoadingState(stateRendererType: StateRendererType.popUpLoadingState));
+    (await _registerUseCase.execute(RegisterUseCaseInput(
+      registerViewObject.mobileNumber,
+      registerViewObject.countryMobileCode,
+      registerViewObject.userName,
+      registerViewObject.email,
+      registerViewObject.password,
+      registerViewObject.profilePicture,
+    )))
+        .fold(
+            (failure) => {
+                  // left -> failure
+                  inputState.add(ErrorState(
+                      StateRendererType.popUpErrorState, failure.message))
+                }, (data) {
+      // right -> success (data)
+      inputState.add(ContentState());
+
+      // navigate to main screen after the login
+    });
   }
 
   // -- private methods
