@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:tut_app/app/functions.dart';
 import 'package:tut_app/domain/usecase/register_usecase.dart';
 import 'package:tut_app/presentation/base/base_view_model.dart';
+import 'package:tut_app/presentation/common/freezed_data_classes.dart';
 
 class RegisterViewModel extends BaseViewModel
     with RegisterViewModelInput, RegisterViewModelOutput {
@@ -24,7 +25,9 @@ class RegisterViewModel extends BaseViewModel
   final StreamController _isAllInputsValidStreamController =
       StreamController<void>.broadcast();
 
-  RegisterUseCase _registerUseCase;
+  final RegisterUseCase _registerUseCase;
+
+  var registerViewObject = RegisterObject("", "", "", "", "", "");
 
   RegisterViewModel(this._registerUseCase);
 
