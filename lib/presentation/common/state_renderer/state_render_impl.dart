@@ -70,10 +70,23 @@ class EmptyState extends FlowState {
       StateRendererType.emptyScreenState;
 }
 
+// success state
+class SuccessState extends FlowState {
+  String message;
+
+  SuccessState(this.message);
+
+  @override
+  String getMessage() => message;
+
+  @override
+  StateRendererType getStateRendererType() => StateRendererType.popUpSuccess;
+}
+
 extension FlowStateExtension on FlowState {
   Widget getScreenWidget(BuildContext context, Widget contentScreenWidget,
       Function retryActionFunction) {
-    switch (this.runtimeType) {
+    switch (runtimeType) {
       case LoadingState:
         {
           if (getStateRendererType() == StateRendererType.popUpLoadingState) {
@@ -127,6 +140,17 @@ extension FlowStateExtension on FlowState {
             retryActionFunction: retryActionFunction,
           );
         }
+      case SuccessState:
+        {
+          // i should check if we are showing loading popup to remove it before showing success popup
+          dismissDialog(context);
+
+          // show popup
+          showPopUp(context, StateRendererType.popUpSuccess, getMessage(),
+              title: AppStrings.success);
+          // return content ui of the screen
+          return contentScreenWidget;
+        }
       default:
         {
           return contentScreenWidget;
@@ -143,14 +167,16 @@ extension FlowStateExtension on FlowState {
   _isThereCurrentDialogShowing(BuildContext context) =>
       ModalRoute.of(context)?.isCurrent != true;
 
-  showPopUp(BuildContext context, StateRendererType stateRendererType,
-      String message) {
+  showPopUp(
+      BuildContext context, StateRendererType stateRendererType, String message,
+      {String title = empty}) {
     WidgetsBinding.instance?.addPostFrameCallback(
       (_) => showDialog(
         context: context,
         builder: (BuildContext context) => StateRenderer(
           stateRendererType: stateRendererType,
           message: message,
+          title: title,
           retryActionFunction: () {},
         ),
       ),
