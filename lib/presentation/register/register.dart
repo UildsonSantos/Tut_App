@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tut_app/app/di.dart';
+import 'package:tut_app/presentation/common/state_renderer/state_render_impl.dart';
 import 'package:tut_app/presentation/register/register_view_model.dart';
+import 'package:tut_app/presentation/resources/color_manager.dart';
+import 'package:tut_app/presentation/resources/values_manager.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -14,13 +17,13 @@ class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _userNameTextEditingController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _mobileNumberTextEditingController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _userEmailEditingController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _userPasswordEditingController =
-      TextEditingController();
+  TextEditingController();
 
   @override
   void initState() {
@@ -55,10 +58,32 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Sign up page'),
+    return Scaffold(
+      backgroundColor: ColorManager.white,
+      appBar: AppBar(
+        elevation: AppSize.s0,
+        iconTheme: IconThemeData(color: ColorManager.primary),
+        backgroundColor: ColorManager.white,
+      ),
+      body: StreamBuilder<FlowState>(
+        stream: _viewModel.outputState,
+        builder: (context, snapshot) {
+          return Center(
+            child: snapshot.data?.getScreenWidget(context, _getContentWidget(),
+                    () {
+                  _viewModel.register();
+                }) ??
+                _getContentWidget(),
+          );
+        },
       ),
     );
   }
+
+  Widget _getContentWidget() {
+    return const Center(
+      child: Text('Register Screen'),
+    );
+  }
 }
+
