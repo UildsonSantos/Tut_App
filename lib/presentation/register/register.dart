@@ -206,6 +206,23 @@ class _RegisterViewState extends State<RegisterView> {
                   left: AppPadding.p28,
                   right: AppPadding.p28,
                 ),
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: ColorManager.lightGrey)),
+                  child: GestureDetector(
+                    child: _getMediaWidget(),
+                    onTap: () {
+                      _showPicker(context);
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppSize.s28),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: AppPadding.p28,
+                  right: AppPadding.p28,
+                ),
                 child: StreamBuilder<bool>(
                   stream: _viewModel.outputIsAllInputsValid,
                   builder: (context, snapshot) {
@@ -236,17 +253,26 @@ class _RegisterViewState extends State<RegisterView> {
                     TextButton(
                       onPressed: () {
                         Navigator.pushNamed(
-                            context, Routes.forgotPasswordRoute);
+                          context,
+                          Routes.forgotPasswordRoute,
+                        );
                       },
-                      child: Text(AppStrings.forgotPassword,
-                          style: Theme.of(context).textTheme.subtitle2),
+                      child: Text(
+                        AppStrings.forgotPassword,
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, Routes.registerRoute);
+                        Navigator.pushNamed(
+                          context,
+                          Routes.registerRoute,
+                        );
                       },
-                      child: Text(AppStrings.registerText,
-                          style: Theme.of(context).textTheme.subtitle2),
+                      child: Text(
+                        AppStrings.registerText,
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
                     )
                   ],
                 ),
@@ -256,5 +282,13 @@ class _RegisterViewState extends State<RegisterView> {
         ),
       ),
     );
+  }
+
+  Widget _getMediaWidget() {
+    return Container();
+  }
+
+  Widget _showPicker(BuildContext context) {
+    return Container();
   }
 }
