@@ -8,9 +8,10 @@ const zero = 0;
 extension CustomerResponseMapper on CustomerResponse? {
   Customer toDomain() {
     return Customer(
-        this?.id?.orEmpty() ?? empty,
-        this?.name?.orEmpty() ?? empty,
-        this?.numOfNotifications?.orZero() ?? zero);
+      this?.id?.orEmpty() ?? empty,
+      this?.name?.orEmpty() ?? empty,
+      this?.numOfNotifications?.orZero() ?? zero,
+    );
   }
 }
 
@@ -31,5 +32,36 @@ extension AuthenticationResponseMapper on AuthenticationResponse? {
 extension ForgotPasswordResponseMapper on ForgotPasswordResponse? {
   String toDomain() {
     return this?.support?.orEmpty() ?? empty;
+  }
+}
+
+extension ServiceResponseMapper on ServiceResponse? {
+  Service toDomain() {
+    return Service(
+      this?.id?.orZero() ?? zero,
+      this?.title?.orEmpty() ?? empty,
+      this?.image?.orEmpty() ?? empty,
+    );
+  }
+}
+
+extension StoreResponseMapper on StoreResponse? {
+  Store toDomain() {
+    return Store(
+      this?.id?.orZero() ?? zero,
+      this?.title?.orEmpty() ?? empty,
+      this?.image?.orEmpty() ?? empty,
+    );
+  }
+}
+
+extension BannerResponseMapper on BannerResponse? {
+  BannerAd toDomain() {
+    return BannerAd(
+      this?.id?.orZero() ?? zero,
+      this?.title?.orEmpty() ?? empty,
+      this?.image?.orEmpty() ?? empty,
+      this?.link?.orEmpty() ?? empty,
+    );
   }
 }
