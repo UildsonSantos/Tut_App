@@ -10,7 +10,6 @@ import 'package:tut_app/presentation/common/state_renderer/state_render_impl.dar
 import 'package:tut_app/presentation/register/register_view_model.dart';
 import 'package:tut_app/presentation/resources/assets_manager.dart';
 import 'package:tut_app/presentation/resources/color_manager.dart';
-import 'package:tut_app/presentation/resources/routes_manager.dart';
 import 'package:tut_app/presentation/resources/strings_manager.dart';
 import 'package:tut_app/presentation/resources/values_manager.dart';
 
@@ -240,7 +239,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 _viewModel.register();
                               }
                             : null,
-                        child: const Text(AppStrings.login),
+                        child: const Text(AppStrings.register),
                       ),
                     );
                   },
@@ -252,34 +251,12 @@ class _RegisterViewState extends State<RegisterView> {
                   left: AppPadding.p28,
                   right: AppPadding.p28,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          Routes.forgotPasswordRoute,
-                        );
-                      },
-                      child: Text(
-                        AppStrings.forgotPassword,
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          Routes.registerRoute,
-                        );
-                      },
-                      child: Text(
-                        AppStrings.registerText,
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                    )
-                  ],
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(AppStrings.haveAccount,
+                      style: Theme.of(context).textTheme.subtitle2),
                 ),
               )
             ],
