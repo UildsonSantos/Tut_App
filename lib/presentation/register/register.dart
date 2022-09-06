@@ -2,14 +2,17 @@ import 'dart:io';
 
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tut_app/app/app_prefs.dart';
 import 'package:tut_app/app/di.dart';
 import 'package:tut_app/data/mapper/mapper.dart';
 import 'package:tut_app/presentation/common/state_renderer/state_render_impl.dart';
 import 'package:tut_app/presentation/register/register_view_model.dart';
 import 'package:tut_app/presentation/resources/assets_manager.dart';
 import 'package:tut_app/presentation/resources/color_manager.dart';
+import 'package:tut_app/presentation/resources/routes_manager.dart';
 import 'package:tut_app/presentation/resources/strings_manager.dart';
 import 'package:tut_app/presentation/resources/values_manager.dart';
 
@@ -22,6 +25,7 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final RegisterViewModel _viewModel = instance<RegisterViewModel>();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
   ImagePicker picker = instance<ImagePicker>();
   final _formKey = GlobalKey<FormState>();
 
@@ -55,6 +59,15 @@ class _RegisterViewState extends State<RegisterView> {
 
     _mobileNumberTextEditingController.addListener(() {
       _viewModel.setMobileNumber(_mobileNumberTextEditingController.text);
+    });
+
+    _viewModel.isUserLoggedInSuccessfullyStreamController.stream
+        .listen((isSuccessLoggedIn) {
+      // navigate to main screen
+      SchedulerBinding.instance?.addPostFrameCallback((_) {
+        _appPreferences.setIsUserLoggedIn();
+        Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+      });
     });
   }
 
