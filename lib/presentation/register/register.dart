@@ -1,8 +1,9 @@
-import 'dart:html';
+import 'dart:io';
 
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tut_app/app/di.dart';
 import 'package:tut_app/data/mapper/mapper.dart';
 import 'package:tut_app/presentation/common/state_renderer/state_render_impl.dart';
@@ -22,6 +23,7 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final RegisterViewModel _viewModel = instance<RegisterViewModel>();
+  ImagePicker picker = instance<ImagePicker>();
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _userNameTextEditingController =
@@ -289,18 +291,18 @@ class _RegisterViewState extends State<RegisterView> {
 
   Widget _getMediaWidget() {
     return Padding(
-      padding: EdgeInsets.only(left: AppPadding.p8, right: AppPadding.p8),
+      padding: const EdgeInsets.only(left: AppPadding.p8, right: AppPadding.p8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Flexible(child: Text(AppStrings.profilePicture)),
+          const Flexible(child: Text(AppStrings.profilePicture)),
           Flexible(
               child: StreamBuilder<File?>(
-                stream: _viewModel.outputProfilePicture,
-                builder: (context, snapshot) {
-                  return _imagePickedByUser(snapshot.data);
-                },
-              )),
+            stream: _viewModel.outputProfilePicture,
+            builder: (context, snapshot) {
+              return _imagePickedByUser(snapshot.data);
+            },
+          )),
           Flexible(child: SvgPicture.asset(ImageAssets.photoCameraIc)),
         ],
       ),
@@ -315,7 +317,44 @@ class _RegisterViewState extends State<RegisterView> {
     }
   }
 
-  Widget _showPicker(BuildContext context) {
-    return Container();
+  _showPicker(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: Wrap(
+              children: [
+                ListTile(
+                  trailing: const Icon(Icons.arrow_forward),
+                  leading: const Icon(Icons.camera),
+                  title: const Text(AppStrings.photoGalley),
+                  onTap: () {
+                    _imageFormGallery();
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ListTile(
+                  trailing: const Icon(Icons.arrow_forward),
+                  leading: const Icon(Icons.camera_alt_rounded),
+                  title: const Text(AppStrings.photoCamera),
+                  onTap: () {
+                    _imageFormCamera();
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ),
+          );
+        });
+  }
+
+  _imageFormGallery() async {
+    var image = await picker.pickImage(source: ImageSource.gallery);
+    _viewModel.setProfilePicture(File(image?.path ?? ""));
+  }
+
+  _imageFormCamera() async {
+    var image = await picker.pickImage(source: ImageSource.camera);
+    _viewModel.setProfilePicture(File(image?.path ?? ""));
   }
 }
