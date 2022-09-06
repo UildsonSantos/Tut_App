@@ -90,7 +90,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   Widget _getContentWidget() {
     return Container(
-      padding: const EdgeInsets.only(top: AppPadding.p60),
+      padding: const EdgeInsets.only(top: AppPadding.p8),
       child: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -118,12 +118,12 @@ class _RegisterViewState extends State<RegisterView> {
                   },
                 ),
               ),
+              const SizedBox(height: AppSize.s12),
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(
                     left: AppPadding.p28,
                     right: AppPadding.p28,
-                    bottom: AppPadding.p28,
                   ),
                   child: Row(
                     children: [
@@ -135,10 +135,11 @@ class _RegisterViewState extends State<RegisterView> {
                             _viewModel
                                 .setCountryCode(country.dialCode ?? empty);
                           },
-                          initialSelection: "+33",
+                          initialSelection: "+55",
                           showCountryOnly: true,
+                          hideMainText: true,
                           showOnlyCountryWhenClosed: true,
-                          favorite: const ["+966", "+02", "+39", "+55"],
+                          favorite: const ["+55", "+02", "+39"],
                         ),
                       ),
                       Expanded(
@@ -162,7 +163,7 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                 ),
               ),
-              const SizedBox(height: AppSize.s28),
+              const SizedBox(height: AppSize.s12),
               Padding(
                 padding: const EdgeInsets.only(
                   left: AppPadding.p28,
@@ -183,7 +184,7 @@ class _RegisterViewState extends State<RegisterView> {
                   },
                 ),
               ),
-              const SizedBox(height: AppSize.s28),
+              const SizedBox(height: AppSize.s12),
               Padding(
                 padding: const EdgeInsets.only(
                   left: AppPadding.p28,
@@ -204,13 +205,14 @@ class _RegisterViewState extends State<RegisterView> {
                   },
                 ),
               ),
-              const SizedBox(height: AppSize.s28),
+              const SizedBox(height: AppSize.s12),
               Padding(
                 padding: const EdgeInsets.only(
                   left: AppPadding.p28,
                   right: AppPadding.p28,
                 ),
                 child: Container(
+                  height: AppSize.s40,
                   decoration: BoxDecoration(
                       border: Border.all(color: ColorManager.lightGrey)),
                   child: GestureDetector(
