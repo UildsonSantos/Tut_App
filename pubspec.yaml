@@ -87,6 +87,7 @@ flutter:
     - assets/images/left_arrow_ic.svg
     - assets/images/right_arrow_ic.svg
     - assets/images/solid_circle_ic.svg
+    - assets/images/photo_camera_ic.svg
     - assets/json/empty.json
     - assets/json/error.json
     - assets/json/loading.json
