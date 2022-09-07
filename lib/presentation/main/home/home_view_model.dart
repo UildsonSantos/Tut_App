@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:rxdart/rxdart.dart';
 import 'package:tut_app/domain/models/models.dart';
 import 'package:tut_app/domain/usecase/home_usecase.dart';
 import 'package:tut_app/presentation/base/base_view_model.dart';
+import 'package:tut_app/presentation/common/state_renderer/state_render_impl.dart';
+import 'package:tut_app/presentation/common/state_renderer/state_renderer.dart';
 
 class HomeViewModel extends BaseViewModel
     with HomeViewModelInputs, HomeViewModelOutputs {
@@ -21,7 +24,22 @@ class HomeViewModel extends BaseViewModel
   // inputs
   @override
   void start() {
-    // TODO: implement start
+    _getHome();
+  }
+
+  _getHome() async {
+    inputState.add(LoadingState(
+        stateRendererType: StateRendererType.fullScreenLoadingState));
+
+    (await _homeUseCase.execute(Void)).fold((failure) {
+      inputState.add(
+          ErrorState(StateRendererType.fullScreenErrorState, failure.message));
+    }, (homeObject) {
+      inputState.add(ContentState());
+      inputBanners.add(homeObject.data.banners);
+      inputServices.add(homeObject.data.services);
+      inputStores.add(homeObject.data.stores);
+    });
   }
 
   @override
