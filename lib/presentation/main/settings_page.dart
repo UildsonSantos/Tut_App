@@ -1,10 +1,14 @@
+import 'dart:math' as math;
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tut_app/app/app_prefs.dart';
 import 'package:tut_app/app/di.dart';
 import 'package:tut_app/data/data_source/local_data_source.dart';
 import 'package:tut_app/presentation/resources/assets_manager.dart';
+import 'package:tut_app/presentation/resources/language_manager.dart';
 import 'package:tut_app/presentation/resources/routes_manager.dart';
 import 'package:tut_app/presentation/resources/strings_manager.dart';
 import 'package:tut_app/presentation/resources/values_manager.dart';
@@ -31,7 +35,11 @@ class _SettingsPageState extends State<SettingsPage> {
             style: Theme.of(context).textTheme.headline4,
           ),
           leading: SvgPicture.asset(ImageAssets.changeLangIc),
-          trailing: SvgPicture.asset(ImageAssets.settingsRightArrowIc),
+          trailing: Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.rotationY(isRtl() ? math.pi : 0),
+            child: SvgPicture.asset(ImageAssets.settingsRightArrowIc),
+          ),
           onTap: () {
             _changeLanguage();
           },
@@ -42,7 +50,11 @@ class _SettingsPageState extends State<SettingsPage> {
             style: Theme.of(context).textTheme.headline4,
           ),
           leading: SvgPicture.asset(ImageAssets.contactUsIc),
-          trailing: SvgPicture.asset(ImageAssets.settingsRightArrowIc),
+          trailing: Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.rotationY(isRtl() ? math.pi : 0),
+            child: SvgPicture.asset(ImageAssets.settingsRightArrowIc),
+          ),
           onTap: () {
             _contactUs();
           },
@@ -53,7 +65,11 @@ class _SettingsPageState extends State<SettingsPage> {
             style: Theme.of(context).textTheme.headline4,
           ),
           leading: SvgPicture.asset(ImageAssets.inviteFriendsIc),
-          trailing: SvgPicture.asset(ImageAssets.settingsRightArrowIc),
+          trailing: Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.rotationY(isRtl() ? math.pi : 0),
+            child: SvgPicture.asset(ImageAssets.settingsRightArrowIc),
+          ),
           onTap: () {
             _inviteFriends();
           },
@@ -64,7 +80,11 @@ class _SettingsPageState extends State<SettingsPage> {
             style: Theme.of(context).textTheme.headline4,
           ),
           leading: SvgPicture.asset(ImageAssets.logoutIc),
-          trailing: SvgPicture.asset(ImageAssets.settingsRightArrowIc),
+          trailing: Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.rotationY(isRtl() ? math.pi : 0),
+            child: SvgPicture.asset(ImageAssets.settingsRightArrowIc),
+          ),
           onTap: () {
             _logout();
           },
@@ -73,8 +93,13 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  bool isRtl() {
+    return context.locale == arabicLocal; // app is in arabic language
+  }
+
   void _changeLanguage() {
-    // i will apply localisation later
+    _appPreferences.setLanguageChanged();
+    Phoenix.rebirth(context);
   }
 
   void _contactUs() {

@@ -45,7 +45,7 @@ class AppPreferences {
       return arabicLocal;
     } else {
       // return english local
-      return arabicLocal;
+      return englishLocal;
     }
   }
 
