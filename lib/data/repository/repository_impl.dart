@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:tut_app/data/data_source/local_data_source.dart';
 import 'package:tut_app/data/data_source/remote_data_source.dart';
 import 'package:tut_app/data/mapper/mapper.dart';
 import 'package:tut_app/data/network/error_handler.dart';
@@ -10,9 +11,14 @@ import 'package:tut_app/domain/repository/repository.dart';
 
 class RepositoryImpl extends Repository {
   final RemoteDataSource _remoteDataSource;
+  final LocalDataSource _localDataSource;
   final NetworkInfo _networkInfo;
 
-  RepositoryImpl(this._remoteDataSource, this._networkInfo);
+  RepositoryImpl(
+    this._remoteDataSource,
+    this._localDataSource,
+    this._networkInfo,
+  );
 
   @override
   Future<Either<Failure, Authentication>> login(
@@ -103,28 +109,38 @@ class RepositoryImpl extends Repository {
 
   @override
   Future<Either<Failure, HomeObject>> getHome() async {
-    if (await _networkInfo.isConnected) {
-      try {
-        // its safe to call the API
-        final response = await _remoteDataSource.getHome();
+    try {
+      // get from cache
+      final response = await _localDataSource.getHome();
+      return Right(response.toDomain());
+    } catch (cacheError) {
+      // we have cache error so we should call API
 
-        if (response.status == ApiInternalStatus.success) // success
-        {
-          // return data (success)
-          // return right
-          return Right(response.toDomain());
-        } else {
-          // return biz logic error
-          // return left
-          return Left(Failure(response.status ?? ApiInternalStatus.failure,
-              response.message ?? ResponseMessage.defaultError));
+      if (await _networkInfo.isConnected) {
+        try {
+          // its safe to call the API
+          final response = await _remoteDataSource.getHome();
+
+          if (response.status == ApiInternalStatus.success) // success
+          {
+            // return data (success)
+            // return right
+            // save response to local data source
+            _localDataSource.saveHomeToCache(response);
+            return Right(response.toDomain());
+          } else {
+            // return biz logic error
+            // return left
+            return Left(Failure(response.status ?? ApiInternalStatus.failure,
+                response.message ?? ResponseMessage.defaultError));
+          }
+        } catch (error) {
+          return (Left(ErrorHandler.handle(error).failure));
         }
-      } catch (error) {
-        return (Left(ErrorHandler.handle(error).failure));
+      } else {
+        // return connection error
+        return Left(DataSource.noInternetConnection.getFailure());
       }
-    } else {
-      // return connection error
-      return Left(DataSource.noInternetConnection.getFailure());
     }
   }
 }
