@@ -66,8 +66,12 @@ class RepositoryImpl extends Repository {
         } else {
           // failure
           // return left
-          return Left(Failure(response.status ?? ResponseCode.defaultError,
-              response.message ?? ResponseMessage.defaultError));
+          return Left(
+            Failure(
+              response.status ?? ResponseCode.defaultError,
+              response.message ?? ResponseMessage.defaultError,
+            ),
+          );
         }
       } catch (error) {
         return Left(ErrorHandler.handle(error).failure);
@@ -94,8 +98,12 @@ class RepositoryImpl extends Repository {
         } else {
           // failure
           // return left
-          return Left(Failure(response.status ?? ResponseCode.defaultError,
-              response.message ?? ResponseMessage.defaultError));
+          return Left(
+            Failure(
+              response.status ?? ResponseCode.defaultError,
+              response.message ?? ResponseMessage.defaultError,
+            ),
+          );
         }
       } catch (error) {
         return Left(ErrorHandler.handle(error).failure);
@@ -131,14 +139,49 @@ class RepositoryImpl extends Repository {
           } else {
             // return biz logic error
             // return left
-            return Left(Failure(response.status ?? ApiInternalStatus.failure,
-                response.message ?? ResponseMessage.defaultError));
+            return Left(
+              Failure(
+                response.status ?? ApiInternalStatus.failure,
+                response.message ?? ResponseMessage.defaultError,
+              ),
+            );
           }
         } catch (error) {
           return (Left(ErrorHandler.handle(error).failure));
         }
       } else {
         // return connection error
+        return Left(DataSource.noInternetConnection.getFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, StoreDetails>> getStoreDetails() async {
+    try {
+      // get data from cache
+
+      final response = await _localDataSource.getStoreDetails();
+      return Right(response.toDomain());
+    } catch (cacheError) {
+      if (await _networkInfo.isConnected) {
+        try {
+          final response = await _remoteDataSource.getStoreDetails();
+          if (response.status == ApiInternalStatus.success) {
+            _localDataSource.saveStoreDetailsToCache(response);
+            return Right(response.toDomain());
+          } else {
+            return Left(
+              Failure(
+                response.status ?? ResponseCode.defaultError,
+                response.message ?? ResponseMessage.defaultError,
+              ),
+            );
+          }
+        } catch (error) {
+          return Left(ErrorHandler.handle(error).failure);
+        }
+      } else {
         return Left(DataSource.noInternetConnection.getFailure());
       }
     }

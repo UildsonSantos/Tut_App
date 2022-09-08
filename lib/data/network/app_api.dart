@@ -18,7 +18,9 @@ abstract class AppServiceClient {
   );
 
   @POST("/customers/forgot-password")
-  Future<ForgotPasswordResponse> forgotPassword(@Field("email") String email);
+  Future<ForgotPasswordResponse> forgotPassword(
+    @Field("email") String email,
+  );
 
   @POST("/customers/register")
   Future<AuthenticationResponse> register(
@@ -32,4 +34,7 @@ abstract class AppServiceClient {
 
   @GET("/home")
   Future<HomeResponse> getHome();
+
+  @GET("/store-details/1")
+  Future<StoreDetailsResponse> getStoreDetails();
 }

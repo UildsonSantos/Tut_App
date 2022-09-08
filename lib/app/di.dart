@@ -14,10 +14,12 @@ import 'package:tut_app/domain/usecase/forgot_password_usecase.dart';
 import 'package:tut_app/domain/usecase/home_usecase.dart';
 import 'package:tut_app/domain/usecase/login_usecase.dart';
 import 'package:tut_app/domain/usecase/register_usecase.dart';
+import 'package:tut_app/domain/usecase/store_details_usecase.dart';
 import 'package:tut_app/presentation/forgot_password/forgot_password_view_model.dart';
 import 'package:tut_app/presentation/login/login_view_model.dart';
 import 'package:tut_app/presentation/main/home/home_view_model.dart';
 import 'package:tut_app/presentation/register/register_view_model.dart';
+import 'package:tut_app/presentation/store_datails/store_details_view_model.dart';
 
 final instance = GetIt.instance;
 
@@ -80,9 +82,11 @@ initLoginModule() {
 initForgotPasswordModule() {
   if (!GetIt.I.isRegistered<ForgotPasswordUseCase>()) {
     instance.registerFactory<ForgotPasswordUseCase>(
-        () => ForgotPasswordUseCase(instance()));
+      () => ForgotPasswordUseCase(instance()),
+    );
     instance.registerFactory<ForgotPasswordViewModel>(
-        () => ForgotPasswordViewModel(instance()));
+      () => ForgotPasswordViewModel(instance()),
+    );
   }
 }
 
@@ -107,6 +111,17 @@ initHomeModule() {
     );
     instance.registerFactory<HomeViewModel>(
       () => HomeViewModel(instance()),
+    );
+  }
+}
+
+initStoreDetailsModule() {
+  if (!GetIt.I.isRegistered<StoreDetailsUseCase>()) {
+    instance.registerFactory<StoreDetailsUseCase>(
+      () => StoreDetailsUseCase(instance()),
+    );
+    instance.registerFactory<StoreDetailsViewModel>(
+      () => StoreDetailsViewModel(instance()),
     );
   }
 }

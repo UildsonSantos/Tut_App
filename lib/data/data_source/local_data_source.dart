@@ -4,10 +4,17 @@ import 'package:tut_app/data/responses/responses.dart';
 const cacheHomeKey = "CACHE_HOME_KEY";
 const cacheHomeInterval = 60 * 1000; // 1 MINUTE IN MILLIS
 
+const cacheStoreDetailsKey = "CACHE_STORE_DETAILS_KEY";
+const cacheStoreDetailsInterval = 60 * 500; // 30s in millis
+
 abstract class LocalDataSource {
   Future<HomeResponse> getHome();
 
   Future<void> saveHomeToCache(HomeResponse homeResponse);
+
+  Future<StoreDetailsResponse> getStoreDetails();
+
+  Future<void> saveStoreDetailsToCache(StoreDetailsResponse response);
 
   void clearCache();
 
@@ -44,6 +51,22 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   void removeFromCache(String key) {
     cacheMap.remove(key);
+  }
+
+  @override
+  Future<StoreDetailsResponse> getStoreDetails() async {
+    CachedItem? cachedItem = cacheMap[cacheStoreDetailsKey];
+
+    if (cachedItem != null && cachedItem.isValid(cacheStoreDetailsInterval)) {
+      return cachedItem.data;
+    } else {
+      throw ErrorHandler.handle(DataSource.cacheError);
+    }
+  }
+
+  @override
+  Future<void> saveStoreDetailsToCache(StoreDetailsResponse response) async {
+    cacheMap[cacheStoreDetailsKey] = CachedItem(response);
   }
 }
 
