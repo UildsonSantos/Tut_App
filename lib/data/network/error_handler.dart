@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:tut_app/data/network/failure.dart';
 import 'package:tut_app/presentation/resources/strings_manager.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 enum DataSource {
   success,
@@ -142,62 +143,62 @@ extension DataSourceExtension on DataSource {
       case DataSource.badRequest:
         return Failure(
           ResponseCode.badRequest,
-          ResponseMessage.badRequest,
+          ResponseMessage.badRequest.tr(),
         );
       case DataSource.unauthorized:
         return Failure(
           ResponseCode.unauthorized,
-          ResponseMessage.unauthorized,
+          ResponseMessage.unauthorized.tr(),
         );
       case DataSource.notFound:
         return Failure(
           ResponseCode.notFound,
-          ResponseMessage.notFound,
+          ResponseMessage.notFound.tr(),
         );
       case DataSource.internalServerError:
         return Failure(
           ResponseCode.internalServerError,
-          ResponseMessage.internalServerError,
+          ResponseMessage.internalServerError.tr(),
         );
       case DataSource.connectTimeout:
         return Failure(
           ResponseCode.connectTimeout,
-          ResponseMessage.connectTimeout,
+          ResponseMessage.connectTimeout.tr(),
         );
       case DataSource.cancel:
         return Failure(
           ResponseCode.cancel,
-          ResponseMessage.cancel,
+          ResponseMessage.cancel.tr(),
         );
       case DataSource.receiveTimeout:
         return Failure(
           ResponseCode.receiveTimeout,
-          ResponseMessage.receiveTimeout,
+          ResponseMessage.receiveTimeout.tr(),
         );
       case DataSource.sendTimeout:
         return Failure(
           ResponseCode.sendTimeout,
-          ResponseMessage.sendTimeout,
+          ResponseMessage.sendTimeout.tr(),
         );
       case DataSource.cacheError:
         return Failure(
           ResponseCode.cacheError,
-          ResponseMessage.cacheError,
+          ResponseMessage.cacheError.tr(),
         );
       case DataSource.noInternetConnection:
         return Failure(
           ResponseCode.noInternetConnection,
-          ResponseMessage.noInternetConnection,
+          ResponseMessage.noInternetConnection.tr(),
         );
       case DataSource.defaultError:
         return Failure(
           ResponseCode.defaultError,
-          ResponseMessage.defaultError,
+          ResponseMessage.defaultError.tr(),
         );
       default:
         return Failure(
           ResponseCode.defaultError,
-          ResponseMessage.defaultError,
+          ResponseMessage.defaultError.tr(),
         );
     }
   }

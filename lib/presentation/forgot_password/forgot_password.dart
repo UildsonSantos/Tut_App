@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:tut_app/app/di.dart';
 import 'package:tut_app/presentation/common/state_renderer/state_render_impl.dart';
@@ -66,7 +67,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                    left: AppPadding.p28, right: AppPadding.p28),
+                  left: AppPadding.p28,
+                  right: AppPadding.p28,
+                ),
                 child: StreamBuilder<bool>(
                   stream: _viewModel.outputIsEmailValid,
                   builder: (context, snapshot) {
@@ -74,11 +77,11 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                       keyboardType: TextInputType.emailAddress,
                       controller: _emailTextEditingController,
                       decoration: InputDecoration(
-                          hintText: AppStrings.emailHint,
-                          labelText: AppStrings.emailHint,
+                          hintText: AppStrings.emailHint.tr(),
+                          labelText: AppStrings.emailHint.tr(),
                           errorText: (snapshot.data ?? true)
                               ? null
-                              : AppStrings.invalidEmail),
+                              : AppStrings.invalidEmail.tr()),
                     );
                   },
                 ),
@@ -88,7 +91,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                    left: AppPadding.p28, right: AppPadding.p28),
+                  left: AppPadding.p28,
+                  right: AppPadding.p28,
+                ),
                 child: StreamBuilder<bool>(
                   stream: _viewModel.outputIsAllInputValid,
                   builder: (context, snapshot) {
@@ -96,10 +101,11 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                       width: double.infinity,
                       height: AppSize.s40,
                       child: ElevatedButton(
-                          onPressed: (snapshot.data ?? false)
-                              ? () => _viewModel.forgotPassword()
-                              : null,
-                          child: const Text(AppStrings.resetPassword)),
+                        onPressed: (snapshot.data ?? false)
+                            ? () => _viewModel.forgotPassword()
+                            : null,
+                        child: Text(AppStrings.resetPassword.tr()),
+                      ),
                     );
                   },
                 ),
