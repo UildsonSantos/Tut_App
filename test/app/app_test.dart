@@ -6,7 +6,7 @@ class Test extends StatelessWidget {
   const Test({Key? key}) : super(key: key);
 
   void updateAppState() {
-    MyApp.instance.appState = 10;
+     MyApp.instance.appState = 10;
   }
 
   void getAppState() {
