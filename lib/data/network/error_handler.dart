@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:tut_app/data/network/failure.dart';
+import 'package:tut_app/presentation/resources/strings_manager.dart';
 
 enum DataSource {
   success,
@@ -83,31 +84,51 @@ class ResponseCode {
   static const int noInternetConnection = -7;
 }
 
+// API response codes
 class ResponseMessage {
-  // API status codes
-  static const String success = "Success"; // success with data
-  static const String noContent =
-      "Success with no content"; // success with no content
-  static const String badRequest =
-      "Bad request, try again later"; // failure, api rejected the request
-  static const String forbidden =
-      "Forbidden request, try again later"; // failure, api rejected the request
-  static const String unauthorized =
-      "User is unauthorised, try again later"; // failure user is not authorised
-  static const String notFound =
-      "Url is not found, try again later"; // failure, api url is not correct and not found
-  static const String internalServerError =
-      "Some thing went wrong, try again later"; // failure, crash happened in server side
+  // success with data
+  static const String success = AppStrings.success;
 
-  // local status code
-  static const String defaultError = "Some thing went wrong, try again later";
-  static const String connectTimeout = "Time out error, try again later";
-  static const String cancel = "Request was cancelled, try again later";
-  static const String receiveTimeout = "Time out error, try again later";
-  static const String sendTimeout = "Time out error, try again later";
-  static const String cacheError = "Cache error, try again later";
-  static const String noInternetConnection =
-      "Please check your internet connection";
+  // Success with no content
+  static const String noContent = AppStrings.noContent;
+
+  // failure, api rejected the request
+  static const String badRequest = AppStrings.badRequestError;
+
+  // failure, api rejected the request
+  static const String forbidden = AppStrings.forbiddenError;
+
+  // failure user is not authorised
+  static const String unauthorized = AppStrings.unauthorizedError;
+
+  // failure, api url is not correct and not found
+  static const String notFound = AppStrings.notFoundError;
+
+  // failure, crash happened in server side
+  static const String internalServerError = AppStrings.internalServerError;
+
+  // local response codes
+
+  // unknown error happened
+  static const String defaultError = AppStrings.defaultError;
+
+  // issue in connectivity
+  static const String connectTimeout = AppStrings.timeoutError;
+
+  // API request was cancelled
+  static const String cancel = AppStrings.cancelRequest;
+
+  // issue in connectivity
+  static const String receiveTimeout = AppStrings.timeoutError;
+
+  // issue in connectivity
+  static const String sendTimeout = AppStrings.timeoutError;
+
+  // issue in getting data from local data source (cache)
+  static const String cacheError = AppStrings.cacheError;
+
+  // issue in connectivity
+  static const String noInternetConnection = AppStrings.noInternetError;
 }
 
 class ApiInternalStatus {
